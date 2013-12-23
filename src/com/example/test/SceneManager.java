@@ -1,21 +1,15 @@
 package com.example.test;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
 public class SceneManager {
-	// ---------------------------------------------
-	// SCENES
-	// ---------------------------------------------
-
 	private BaseScene splashScene;
 	private BaseScene menuScene;
 	private BaseScene gameScene;
 	private BaseScene loadingScene;
-
-	// ---------------------------------------------
-	// VARIABLES
-	// ---------------------------------------------
 
 	private static final SceneManager INSTANCE = new SceneManager();
 
@@ -28,10 +22,6 @@ public class SceneManager {
 	public enum SceneType {
 		SCENE_SPLASH, SCENE_MENU, SCENE_GAME, SCENE_LOADING,
 	}
-
-	// ---------------------------------------------
-	// CLASS LOGIC
-	// ---------------------------------------------
 
 	public void setScene(BaseScene scene) {
 		engine.setScene(scene);
@@ -57,10 +47,6 @@ public class SceneManager {
 			break;
 		}
 	}
-
-	// ---------------------------------------------
-	// GETTERS AND SETTERS
-	// ---------------------------------------------
 
 	public static SceneManager getInstance() {
 		return INSTANCE;
@@ -90,7 +76,37 @@ public class SceneManager {
 	public void createMenuScene() {
 		ResourcesManager.getInstance().loadMenuResources();
 		menuScene = new MainMenuScene();
-		setScene(menuScene);
+		loadingScene = new LoadingScene();
+		SceneManager.getInstance().setScene(menuScene);
 		disposeSplashScene();
+	}
+
+	public void loadGameScene(final Engine mEngine) {
+		setScene(loadingScene);
+		ResourcesManager.getInstance().unloadMenuTextures();
+		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
+				new ITimerCallback() {
+					@Override
+					public void onTimePassed(final TimerHandler pTimerHandler) {
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+						ResourcesManager.getInstance().loadGameResources();
+						gameScene = new GameScene();
+						setScene(gameScene);
+					}
+				}));
+	}
+
+	public void loadMenuScene(final Engine mEngine) {
+		setScene(loadingScene);
+		gameScene.disposeScene();
+		ResourcesManager.getInstance().unloadGameTextures();
+		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
+				new ITimerCallback() {
+					public void onTimePassed(final TimerHandler pTimerHandler) {
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+						ResourcesManager.getInstance().loadMenuTextures();
+						setScene(menuScene);
+					}
+				}));
 	}
 }

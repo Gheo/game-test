@@ -2,6 +2,9 @@ package com.example.test;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -13,21 +16,16 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
-public class ResourcesManager {
-	// ---------------------------------------------
-	// VARIABLES
-	// ---------------------------------------------
+import android.graphics.Color;
 
+public class ResourcesManager {
 	private static final ResourcesManager INSTANCE = new ResourcesManager();
 
 	public Engine engine;
 	public GameActivity activity;
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
-
-	// ---------------------------------------------
-	// TEXTURES & TEXTURE REGIONS
-	// ---------------------------------------------
+	public Font font;
 
 	public ITextureRegion splash_region;
 	private BitmapTextureAtlas splashTextureAtlas;
@@ -38,13 +36,10 @@ public class ResourcesManager {
 
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
 
-	// ---------------------------------------------
-	// CLASS LOGIC
-	// ---------------------------------------------
-
 	public void loadMenuResources() {
 		loadMenuGraphics();
 		loadMenuAudio();
+		loadMenuFonts();
 	}
 
 	public void loadGameResources() {
@@ -106,6 +101,18 @@ public class ResourcesManager {
 		splash_region = null;
 	}
 
+	private void loadMenuFonts() {
+		FontFactory.setAssetBasePath("font/");
+		final ITexture mainFontTexture = new BitmapTextureAtlas(
+				activity.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+		font = FontFactory.createStrokeFromAsset(activity.getFontManager(),
+				mainFontTexture, activity.getAssets(), "font.ttf", 50, true,
+				Color.WHITE, 2, Color.BLACK);
+		font.load();
+	}
+
 	/**
 	 * @param engine
 	 * @param activity
@@ -125,11 +132,19 @@ public class ResourcesManager {
 		getInstance().vbom = vbom;
 	}
 
-	// ---------------------------------------------
-	// GETTERS AND SETTERS
-	// ---------------------------------------------
-
 	public static ResourcesManager getInstance() {
 		return INSTANCE;
+	}
+
+	public void unloadMenuTextures() {
+		menuTextureAtlas.unload();
+	}
+
+	public void loadMenuTextures() {
+		menuTextureAtlas.load();
+	}
+
+	public void unloadGameTextures() {
+
 	}
 }

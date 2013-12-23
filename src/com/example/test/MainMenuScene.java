@@ -80,6 +80,7 @@ public class MainMenuScene extends BaseScene implements
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 		case MENU_PLAY:
+			SceneManager.getInstance().loadGameScene(engine);
 			return true;
 		case MENU_OPTIONS:
 			return true;
