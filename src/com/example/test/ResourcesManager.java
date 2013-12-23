@@ -5,8 +5,13 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
+import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.debug.Debug;
 
 public class ResourcesManager {
 	// ---------------------------------------------
@@ -27,6 +32,12 @@ public class ResourcesManager {
 	public ITextureRegion splash_region;
 	private BitmapTextureAtlas splashTextureAtlas;
 
+	public ITextureRegion menu_background_region;
+	public ITextureRegion play_region;
+	public ITextureRegion options_region;
+
+	private BuildableBitmapTextureAtlas menuTextureAtlas;
+
 	// ---------------------------------------------
 	// CLASS LOGIC
 	// ---------------------------------------------
@@ -43,7 +54,25 @@ public class ResourcesManager {
 	}
 
 	private void loadMenuGraphics() {
-
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
+		menuTextureAtlas = new BuildableBitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
+		menu_background_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity,
+						"menu_background.png");
+		play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				menuTextureAtlas, activity, "play.png");
+		options_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity, "options.png");
+		try {
+			this.menuTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 0));
+			this.menuTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
 	}
 
 	private void loadMenuAudio() {
@@ -65,7 +94,8 @@ public class ResourcesManager {
 	public void loadSplashScreen() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		splashTextureAtlas = new BitmapTextureAtlas(
-				activity.getTextureManager(), 500, 500, TextureOptions.BILINEAR);
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
 		splash_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				splashTextureAtlas, activity, "splash.jpg", 0, 0);
 		splashTextureAtlas.load();
