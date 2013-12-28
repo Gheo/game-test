@@ -18,8 +18,8 @@ public class MainMenuScene extends BaseScene implements
 	private final int MENU_OPTIONS = 1;
 
 	private void createBackground() {
-		attachChild(new Sprite(0, 0, resourcesManager.menu_background_region,
-				vbom) {
+		attachChild(new Sprite(400, 240,
+				resourcesManager.menu_background_region, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
 				super.preDraw(pGLState, pCamera);
@@ -45,9 +45,9 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene.buildAnimations();
 		menuChildScene.setBackgroundEnabled(false);
 
-		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 45);
+		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() - 30);
 		optionsMenuItem.setPosition(optionsMenuItem.getX(),
-				optionsMenuItem.getY() + 70);
+				optionsMenuItem.getY() - 80);
 
 		menuChildScene.setOnMenuItemClickListener(this);
 

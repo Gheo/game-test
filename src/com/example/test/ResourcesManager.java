@@ -13,6 +13,7 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
@@ -35,6 +36,14 @@ public class ResourcesManager {
 	public ITextureRegion options_region;
 
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
+
+	public BuildableBitmapTextureAtlas gameTextureAtlas;
+
+	public ITextureRegion platform1_region;
+	public ITextureRegion platform2_region;
+	public ITextureRegion platform3_region;
+	public ITextureRegion coin_region;
+	public ITiledTextureRegion player_region;
 
 	public void loadMenuResources() {
 		loadMenuGraphics();
@@ -75,7 +84,31 @@ public class ResourcesManager {
 	}
 
 	private void loadGameGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+		gameTextureAtlas = new BuildableBitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
 
+		platform1_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
+		platform2_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "platform2.png");
+		platform3_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "platform3.png");
+		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "coin.png");
+		player_region = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(gameTextureAtlas, activity, "player.png",
+						3, 1);
+
+		try {
+			this.gameTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 0));
+			this.gameTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
 	}
 
 	private void loadGameFonts() {

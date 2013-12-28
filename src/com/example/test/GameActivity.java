@@ -39,7 +39,7 @@ public class GameActivity extends BaseGameActivity {
 	@Override
 	public void onCreateResources(
 			OnCreateResourcesCallback pOnCreateResourcesCallback)
-			throws Exception {
+			throws IOException {
 		ResourcesManager.prepareManager(mEngine, this, camera,
 				getVertexBufferObjectManager());
 		resourcesManager = ResourcesManager.getInstance();
