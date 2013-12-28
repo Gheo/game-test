@@ -6,14 +6,17 @@ import org.andengine.opengl.util.GLState;
 
 import com.example.test.SceneManager.SceneType;
 
-public class SplashScene extends BaseScene {
+public class SplashScene extends BaseScene
+{
 	private Sprite splash;
 
 	@Override
-	public void createScene() {
+	public void createScene()
+	{
 		splash = new Sprite(400, 240, resourcesManager.splash_region, vbom) {
 			@Override
-			protected void preDraw(GLState pGLState, Camera pCamera) {
+			protected void preDraw(GLState pGLState, Camera pCamera)
+			{
 				super.preDraw(pGLState, pCamera);
 				pGLState.enableDither();
 			}
@@ -25,17 +28,20 @@ public class SplashScene extends BaseScene {
 	}
 
 	@Override
-	public void onBackKeyPressed() {
+	public void onBackKeyPressed()
+	{
 
 	}
 
 	@Override
-	public SceneType getSceneType() {
+	public SceneType getSceneType()
+	{
 		return SceneType.SCENE_SPLASH;
 	}
 
 	@Override
-	public void disposeScene() {
+	public void disposeScene()
+	{
 		splash.detachSelf();
 		splash.dispose();
 		this.detachSelf();

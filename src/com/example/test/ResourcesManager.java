@@ -1,7 +1,7 @@
 package com.example.test;
 
 import org.andengine.engine.Engine;
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.ITexture;
@@ -19,12 +19,13 @@ import org.andengine.util.debug.Debug;
 
 import android.graphics.Color;
 
-public class ResourcesManager {
+public class ResourcesManager
+{
 	private static final ResourcesManager INSTANCE = new ResourcesManager();
 
 	public Engine engine;
 	public GameActivity activity;
-	public Camera camera;
+	public BoundCamera camera;
 	public VertexBufferObjectManager vbom;
 	public Font font;
 
@@ -45,19 +46,22 @@ public class ResourcesManager {
 	public ITextureRegion coin_region;
 	public ITiledTextureRegion player_region;
 
-	public void loadMenuResources() {
+	public void loadMenuResources()
+	{
 		loadMenuGraphics();
 		loadMenuAudio();
 		loadMenuFonts();
 	}
 
-	public void loadGameResources() {
+	public void loadGameResources()
+	{
 		loadGameGraphics();
 		loadGameFonts();
 		loadGameAudio();
 	}
 
-	private void loadMenuGraphics() {
+	private void loadMenuGraphics()
+	{
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
 		menuTextureAtlas = new BuildableBitmapTextureAtlas(
 				activity.getTextureManager(), 1024, 1024,
@@ -69,21 +73,26 @@ public class ResourcesManager {
 				menuTextureAtlas, activity, "play.png");
 		options_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity, "options.png");
-		try {
+		try
+		{
 			this.menuTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
 							0, 1, 0));
 			this.menuTextureAtlas.load();
-		} catch (final TextureAtlasBuilderException e) {
+		}
+		catch (final TextureAtlasBuilderException e)
+		{
 			Debug.e(e);
 		}
 	}
 
-	private void loadMenuAudio() {
+	private void loadMenuAudio()
+	{
 
 	}
 
-	private void loadGameGraphics() {
+	private void loadGameGraphics()
+	{
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(
 				activity.getTextureManager(), 1024, 1024,
@@ -101,25 +110,31 @@ public class ResourcesManager {
 				.createTiledFromAsset(gameTextureAtlas, activity, "player.png",
 						3, 1);
 
-		try {
+		try
+		{
 			this.gameTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
 							0, 1, 0));
 			this.gameTextureAtlas.load();
-		} catch (final TextureAtlasBuilderException e) {
+		}
+		catch (final TextureAtlasBuilderException e)
+		{
 			Debug.e(e);
 		}
 	}
 
-	private void loadGameFonts() {
+	private void loadGameFonts()
+	{
 
 	}
 
-	private void loadGameAudio() {
+	private void loadGameAudio()
+	{
 
 	}
 
-	public void loadSplashScreen() {
+	public void loadSplashScreen()
+	{
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		splashTextureAtlas = new BitmapTextureAtlas(
 				activity.getTextureManager(), 1024, 1024,
@@ -129,12 +144,14 @@ public class ResourcesManager {
 		splashTextureAtlas.load();
 	}
 
-	public void unloadSplashScreen() {
+	public void unloadSplashScreen()
+	{
 		splashTextureAtlas.unload();
 		splash_region = null;
 	}
 
-	private void loadMenuFonts() {
+	private void loadMenuFonts()
+	{
 		FontFactory.setAssetBasePath("font/");
 		final ITexture mainFontTexture = new BitmapTextureAtlas(
 				activity.getTextureManager(), 256, 256,
@@ -158,26 +175,31 @@ public class ResourcesManager {
 	 *            we can latter access them from different classes (eg. scenes)
 	 */
 	public static void prepareManager(Engine engine, GameActivity activity,
-			Camera camera, VertexBufferObjectManager vbom) {
+			BoundCamera camera, VertexBufferObjectManager vbom)
+	{
 		getInstance().engine = engine;
 		getInstance().activity = activity;
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
 	}
 
-	public static ResourcesManager getInstance() {
+	public static ResourcesManager getInstance()
+	{
 		return INSTANCE;
 	}
 
-	public void unloadMenuTextures() {
+	public void unloadMenuTextures()
+	{
 		menuTextureAtlas.unload();
 	}
 
-	public void loadMenuTextures() {
+	public void loadMenuTextures()
+	{
 		menuTextureAtlas.load();
 	}
 
-	public void unloadGameTextures() {
+	public void unloadGameTextures()
+	{
 
 	}
 }

@@ -12,23 +12,27 @@ import org.andengine.opengl.util.GLState;
 import com.example.test.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
-		IOnMenuItemClickListener {
+		IOnMenuItemClickListener
+{
 	private MenuScene menuChildScene;
 	private final int MENU_PLAY = 0;
 	private final int MENU_OPTIONS = 1;
 
-	private void createBackground() {
+	private void createBackground()
+	{
 		attachChild(new Sprite(400, 240,
 				resourcesManager.menu_background_region, vbom) {
 			@Override
-			protected void preDraw(GLState pGLState, Camera pCamera) {
+			protected void preDraw(GLState pGLState, Camera pCamera)
+			{
 				super.preDraw(pGLState, pCamera);
 				pGLState.enableDither();
 			}
 		});
 	}
 
-	private void createMenuChildScene() {
+	private void createMenuChildScene()
+	{
 		menuChildScene = new MenuScene(camera);
 		menuChildScene.setPosition(0, 0);
 
@@ -55,30 +59,36 @@ public class MainMenuScene extends BaseScene implements
 	}
 
 	@Override
-	public void createScene() {
+	public void createScene()
+	{
 		createBackground();
 		createMenuChildScene();
 	}
 
 	@Override
-	public void onBackKeyPressed() {
+	public void onBackKeyPressed()
+	{
 		System.exit(0);
 	}
 
 	@Override
-	public SceneType getSceneType() {
+	public SceneType getSceneType()
+	{
 		return SceneType.SCENE_MENU;
 	}
 
 	@Override
-	public void disposeScene() {
+	public void disposeScene()
+	{
 
 	}
 
 	@Override
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
-			float pMenuItemLocalX, float pMenuItemLocalY) {
-		switch (pMenuItem.getID()) {
+			float pMenuItemLocalX, float pMenuItemLocalY)
+	{
+		switch (pMenuItem.getID())
+		{
 		case MENU_PLAY:
 			SceneManager.getInstance().loadGameScene(engine);
 			return true;
