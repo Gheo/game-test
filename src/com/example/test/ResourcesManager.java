@@ -46,6 +46,9 @@ public class ResourcesManager
 	public ITextureRegion coin_region;
 	public ITiledTextureRegion player_region;
 
+	public ITextureRegion complete_window_region;
+	public ITiledTextureRegion complete_stars_region;
+
 	public void loadMenuResources()
 	{
 		loadMenuGraphics();
@@ -109,6 +112,12 @@ public class ResourcesManager
 		player_region = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity, "player.png",
 						3, 1);
+		complete_window_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity,
+						"levelCompleteWindow.png");
+		complete_stars_region = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(gameTextureAtlas, activity, "star.png",
+						2, 1);
 
 		try
 		{

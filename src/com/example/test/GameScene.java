@@ -37,6 +37,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.example.test.LevelCompleteWindow.StarsCount;
 import com.example.test.SceneManager.SceneType;
 
 public class GameScene extends BaseScene implements IOnSceneTouchListener
@@ -56,6 +57,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_LEVEL_COMPLETE = "levelComplete";
 
 	private Player player;
 
@@ -63,6 +65,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 
 	private Text gameOverText;
 	private boolean gameOverDisplayed = false;
+
+	private LevelCompleteWindow levelCompleteWindow;
 
 	@Override
 	public void createScene()
@@ -73,6 +77,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		loadLevel(1);
 		createGameOverText();
 		setOnSceneTouchListener(this);
+		levelCompleteWindow = new LevelCompleteWindow(vbom);
 	}
 
 	@Override
@@ -246,6 +251,32 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 								}
 							};
 							levelObject = player;
+						}
+						else if( type
+								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_LEVEL_COMPLETE) )
+						{
+							levelObject = new Sprite(x, y,
+									resourcesManager.complete_stars_region,
+									vbom) {
+								@Override
+								protected void onManagedUpdate(
+										float pSecondsElapsed)
+								{
+									super.onManagedUpdate(pSecondsElapsed);
+
+									if( player.collidesWith(this) )
+									{
+										levelCompleteWindow.display(
+												StarsCount.TWO, GameScene.this,
+												camera);
+										this.setVisible(false);
+										this.setIgnoreUpdate(true);
+									}
+								}
+							};
+							levelObject
+									.registerEntityModifier(new LoopEntityModifier(
+											new ScaleModifier(1, 1, 1.3f)));
 						}
 						else
 						{
