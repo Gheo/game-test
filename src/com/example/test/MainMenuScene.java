@@ -1,13 +1,12 @@
 package com.example.test;
 
-import org.andengine.engine.camera.Camera;
+import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.util.GLState;
 
 import com.example.test.SceneManager.SceneType;
 
@@ -20,15 +19,9 @@ public class MainMenuScene extends BaseScene implements
 
 	private void createBackground()
 	{
-		attachChild(new Sprite(400, 240,
-				resourcesManager.menu_background_region, vbom) {
-			@Override
-			protected void preDraw(GLState pGLState, Camera pCamera)
-			{
-				super.preDraw(pGLState, pCamera);
-				pGLState.enableDither();
-			}
-		});
+		SpriteBackground pBackground = new SpriteBackground(new Sprite(400,
+				240, resourcesManager.menu_background_region, vbom));
+		this.setBackground(pBackground);
 	}
 
 	private void createMenuChildScene()
@@ -80,7 +73,6 @@ public class MainMenuScene extends BaseScene implements
 	@Override
 	public void disposeScene()
 	{
-
 	}
 
 	@Override
@@ -90,7 +82,7 @@ public class MainMenuScene extends BaseScene implements
 		switch (pMenuItem.getID())
 		{
 		case MENU_PLAY:
-			SceneManager.getInstance().loadGameScene(engine);
+			SceneManager.getInstance().loadLevelSelectScene(engine);
 			return true;
 		case MENU_OPTIONS:
 			return true;

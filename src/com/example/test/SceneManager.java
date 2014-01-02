@@ -11,6 +11,7 @@ public class SceneManager
 	private BaseScene menuScene;
 	private BaseScene gameScene;
 	private BaseScene loadingScene;
+	private BaseScene levelSelectScene;
 
 	private static final SceneManager INSTANCE = new SceneManager();
 
@@ -22,7 +23,7 @@ public class SceneManager
 
 	public enum SceneType
 	{
-		SCENE_SPLASH, SCENE_MENU, SCENE_GAME, SCENE_LOADING,
+		SCENE_SPLASH, SCENE_MENU, SCENE_GAME, SCENE_LOADING, SCENE_LEVEL_SELECT
 	}
 
 	public void setScene(BaseScene scene)
@@ -47,6 +48,9 @@ public class SceneManager
 			break;
 		case SCENE_LOADING:
 			setScene(loadingScene);
+			break;
+		case SCENE_LEVEL_SELECT:
+			setScene(levelSelectScene);
 			break;
 		default:
 			break;
@@ -95,7 +99,7 @@ public class SceneManager
 	public void loadGameScene(final Engine mEngine)
 	{
 		setScene(loadingScene);
-		ResourcesManager.getInstance().unloadMenuTextures();
+		ResourcesManager.getInstance().unloadLevelSelectTextures();
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
 				new ITimerCallback() {
 					@Override
@@ -112,8 +116,8 @@ public class SceneManager
 	public void loadMenuScene(final Engine mEngine)
 	{
 		setScene(loadingScene);
-		gameScene.disposeScene();
-		ResourcesManager.getInstance().unloadGameTextures();
+		levelSelectScene.disposeScene();
+		ResourcesManager.getInstance().unloadLevelSelectTextures();
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler)
@@ -121,6 +125,24 @@ public class SceneManager
 						mEngine.unregisterUpdateHandler(pTimerHandler);
 						ResourcesManager.getInstance().loadMenuTextures();
 						setScene(menuScene);
+					}
+				}));
+	}
+
+	public void loadLevelSelectScene(final Engine mEngine)
+	{
+		setScene(loadingScene);
+		ResourcesManager.getInstance().unloadMenuTextures();
+		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
+				new ITimerCallback() {
+					@Override
+					public void onTimePassed(final TimerHandler pTimerHandler)
+					{
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+						ResourcesManager.getInstance()
+								.loadLevelSelectResources();
+						levelSelectScene = new LevelSelectScene();
+						setScene(levelSelectScene);
 					}
 				}));
 	}

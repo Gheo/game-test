@@ -36,8 +36,8 @@ public class ResourcesManager
 	public ITextureRegion play_region;
 	public ITextureRegion options_region;
 
-	private BuildableBitmapTextureAtlas menuTextureAtlas;
-
+	public BuildableBitmapTextureAtlas menuTextureAtlas;
+	public BuildableBitmapTextureAtlas levelTextureAtlas;
 	public BuildableBitmapTextureAtlas gameTextureAtlas;
 
 	public ITextureRegion platform1_region;
@@ -49,11 +49,52 @@ public class ResourcesManager
 	public ITextureRegion complete_window_region;
 	public ITiledTextureRegion complete_stars_region;
 
+	public ITextureRegion game_background;
+
+	public ITextureRegion level_background_region;
+	public ITextureRegion level1_region;
+	public ITextureRegion level2_region;
+	public ITextureRegion level3_region;
+
 	public void loadMenuResources()
 	{
 		loadMenuGraphics();
 		loadMenuAudio();
 		loadMenuFonts();
+	}
+
+	public void loadLevelSelectResources()
+	{
+		loadLevelSelectGraphics();
+	}
+
+	private void loadLevelSelectGraphics()
+	{
+		BitmapTextureAtlasTextureRegionFactory
+				.setAssetBasePath("gfx/levelmenu/");
+		levelTextureAtlas = new BuildableBitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
+		level_background_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(levelTextureAtlas, activity, "background.png");
+		level1_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				levelTextureAtlas, activity, "level1.png");
+		level2_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				levelTextureAtlas, activity, "level2.png");
+		level3_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				levelTextureAtlas, activity, "level3.png");
+
+		try
+		{
+			this.levelTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 0));
+			this.levelTextureAtlas.load();
+		}
+		catch (final TextureAtlasBuilderException e)
+		{
+			Debug.e(e);
+		}
 	}
 
 	public void loadGameResources()
@@ -101,6 +142,8 @@ public class ResourcesManager
 				activity.getTextureManager(), 1024, 1024,
 				TextureOptions.BILINEAR);
 
+		game_background = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "background.png");
 		platform1_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		platform2_region = BitmapTextureAtlasTextureRegionFactory
@@ -210,5 +253,15 @@ public class ResourcesManager
 	public void unloadGameTextures()
 	{
 
+	}
+
+	public void unloadLevelSelectTextures()
+	{
+		levelTextureAtlas.unload();
+	}
+
+	public void loadLevelSelectTextures()
+	{
+		levelTextureAtlas.load();
 	}
 }

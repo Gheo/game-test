@@ -10,7 +10,7 @@ import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
@@ -21,7 +21,6 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.SAXUtils;
 import org.andengine.util.adt.align.HorizontalAlign;
-import org.andengine.util.adt.color.Color;
 import org.andengine.util.level.EntityLoader;
 import org.andengine.util.level.constants.LevelConstants;
 import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
@@ -102,7 +101,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 
 	private void createBackground()
 	{
-		setBackground(new Background(Color.BLUE));
+		SpriteBackground pBackground = new SpriteBackground(new Sprite(400,
+				240, resourcesManager.game_background, vbom));
+		this.setBackground(pBackground);
 	}
 
 	private void createHUD()
