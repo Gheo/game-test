@@ -252,7 +252,7 @@ public class ResourcesManager
 
 	public void unloadGameTextures()
 	{
-
+		gameTextureAtlas.unload();
 	}
 
 	public void unloadLevelSelectTextures()

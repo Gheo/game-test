@@ -118,6 +118,7 @@ public class SceneManager
 		setScene(loadingScene);
 		levelSelectScene.disposeScene();
 		ResourcesManager.getInstance().unloadLevelSelectTextures();
+		ResourcesManager.getInstance().unloadGameTextures();
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler)

@@ -85,14 +85,13 @@ public class LevelSelectScene extends BaseScene implements
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
 			float pMenuItemLocalX, float pMenuItemLocalY)
 	{
+		GameScene.setStartLevel(pMenuItem.getID() + 1);
 		switch (pMenuItem.getID())
 		{
 		case LEVEL_1:
-			SceneManager.getInstance().loadGameScene(engine);
-			return true;
 		case LEVEL_2:
-			return true;
 		case LEVEL_3:
+			SceneManager.getInstance().loadGameScene(engine);
 			return true;
 		default:
 			return false;

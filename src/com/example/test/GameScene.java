@@ -67,13 +67,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 
 	private LevelCompleteWindow levelCompleteWindow;
 
+	private static int startLevel = 0;
+
 	@Override
 	public void createScene()
 	{
 		createBackground();
 		createHUD();
 		createPhysics();
-		loadLevel(1);
+		loadLevel(startLevel);
 		createGameOverText();
 		setOnSceneTouchListener(this);
 		levelCompleteWindow = new LevelCompleteWindow(vbom);
@@ -82,6 +84,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	@Override
 	public void onBackKeyPressed()
 	{
+		scoreText.setText("");
 		SceneManager.getInstance().loadMenuScene(engine);
 	}
 
@@ -270,6 +273,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 										levelCompleteWindow.display(
 												StarsCount.TWO, GameScene.this,
 												camera);
+										gameOverText.setText("");
+										player.setVisible(false);
 										this.setVisible(false);
 										this.setIgnoreUpdate(true);
 									}
@@ -383,5 +388,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 			}
 		};
 		return contactListener;
+	}
+
+	public static int getStartLevel()
+	{
+		return startLevel;
+	}
+
+	public static void setStartLevel(int startLevel)
+	{
+		GameScene.startLevel = startLevel;
 	}
 }
